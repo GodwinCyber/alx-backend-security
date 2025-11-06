@@ -54,6 +54,14 @@ INSTALLED_APPS = [
 #         "LOCATION": "redis://127.0.0.16379/1",
 #     }
 # }
+
+CELERY_BEAT_SCHEDULE = {
+    "detect_anomalies_every_hour": {
+        "task": "ip_tracking.tasks.detect_anomalies",
+        "schedule": 3600,
+    }
+}
+
 RATELIMIT_AUTHENTICATED = '10/m'
 RATELIMIT_ANONYMOUS = '5/m' 
 
