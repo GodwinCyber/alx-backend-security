@@ -48,6 +48,16 @@ INSTALLED_APPS = [
     'ip_tracking',
 ]
 
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backend.redis.RedisCache",
+#         "LOCATION": "redis://127.0.0.16379/1",
+#     }
+# }
+RATELIMIT_AUTHENTICATED = '10/m'
+RATELIMIT_ANONYMOUS = '5/m' 
+
+
 #API_KEY = '1d0b081de3504c1293e09ebf5b642377'
 
 MIDDLEWARE = [
