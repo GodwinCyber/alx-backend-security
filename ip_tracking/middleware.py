@@ -1,8 +1,11 @@
 import datetime
 from django.utils.timezone import now
+from django.conf import settings
 from .models import RequestLog, BlockedIP
 from ipware import get_client_ip
 from django.http import HttpResponseForbidden
+import ipgeolocation #import GeolocationApi, ApiClient, Configuration
+from django.core.cache import cache
 
 
 class RequestLoggingMiddleware:
@@ -42,7 +45,7 @@ class RequestLoggingMiddleware:
     
 class RequestBlockedMiddleware:
     '''Blocked an IP address based on the blacklist'''
-    def __inti__(self, get_response):
+    def __init__(self, get_response):
         '''One time configurations and initialization'''
         self.get_response = get_response
         
@@ -62,4 +65,46 @@ class RequestBlockedMiddleware:
 
         response = self.get_response(request)
         return response
+    
+class GeoRequestLoggingMiddleware:
+    '''
+    Middleware that logs request data + country + city with caching
+    '''
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.geo = ipgeolocation.IPGeolocationApi(settings.IPGEOLOCATION_API_KEY)
+
+    def __call__(self, request):
+        """Extract the IP"""
+        response = self.get_response(request)
+        self.log_request(request)
+        return response
+
+        # check if geolocation data has been cached
+    def log_request(self, request):
+        ip = request.META.get("REMOTE_ADDR")
+        
+        cached_geo = cache.get(ip)
+        if cached_geo:
+            country = cached_geo["country"]
+            city = cached_geo["city"]
+        else:
+            try:
+                geo_data = self.geo.get_ip_geolocation(ip)
+                country = geo_data.get("country_name", "")
+                city = geo_data.get("city", "")
+                cache.set(ip, {"country": country, "city": city}, 60 * 60 * 24)
+            except Exception:
+                country = ""
+                city = ""
+        # Save request record
+        RequestLog.objects.create(
+            ip_address=ip,
+            path=request.path,
+            timestamp=now(),
+            country=country,
+            city=city
+        )
+
+
         

@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/          # ignore if collectstatic outputs here; remove if you commit static files
+# Optional: ignore uploaded files in a uploads/ or similar directory
+uploads/
+
+# Environment / virtualenv
+.env
+.env.*
+venv/
+ENV/
+env/
+.venv/
+.conda/
+conda-env/
+pipenv/
+.python-version
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.pydevproject
+.project
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.cache/
+
+# Docker
+docker-compose.override.yml
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Sphinx
+docs/_build/
+
+# PyInstaller
+*.spec
+
+# Mypy
+.mypy_cache/
+
+# Profiling
+.prof
+
+# Jupyter
+.ipynb_checkpoints/

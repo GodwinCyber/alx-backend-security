@@ -11,9 +11,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os 
+import environ
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+IPGEOLOCATION_API_KEY=env("IPGEOLOCATION_API_KEY")
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,8 +48,12 @@ INSTALLED_APPS = [
     'ip_tracking',
 ]
 
+#API_KEY = '1d0b081de3504c1293e09ebf5b642377'
+
 MIDDLEWARE = [
     'ip_tracking.middleware.RequestLoggingMiddleware',
+    'ip_tracking.middleware.RequestBlockedMiddleware',
+    'ip_tracking.middleware.GeoRequestLoggingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
